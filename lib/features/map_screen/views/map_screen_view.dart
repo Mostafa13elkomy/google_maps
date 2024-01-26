@@ -2,10 +2,11 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps/constants/my_constants.dart';
+import 'package:google_maps/features/map_screen/widgets/my_drawer.dart';
 import 'package:google_maps/features/otp_screen/manager/cubit/phone_auth_cubit.dart';
 import 'package:google_maps/helper/location_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:material_floating_search_bar/material_floating_search_bar.dart';
+import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -107,6 +108,7 @@ class _MapScreenState extends State<MapScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: MyDrawer(),
       body: Stack(
         fit: StackFit.expand,
         children: [
