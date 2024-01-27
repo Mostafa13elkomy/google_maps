@@ -3,4 +3,12 @@ part of 'maps_cubit.dart';
 @immutable
 sealed class MapsState {}
 
-final class MapsInitial extends MapsState {}
+class MapsInitial extends MapsState {}
+
+// ignore: must_be_immutable
+class PlacesLoaded extends MapsState {
+  List<dynamic> places;
+  PlacesLoaded({
+    required this.places,
+  });
+}

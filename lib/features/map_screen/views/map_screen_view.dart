@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps/constants/my_constants.dart';
+import 'package:google_maps/data/models/place_suggestion.dart';
+import 'package:google_maps/features/map_screen/manager/cubit/maps_cubit.dart';
 import 'package:google_maps/features/map_screen/widgets/my_drawer.dart';
 import 'package:google_maps/features/otp_screen/manager/cubit/phone_auth_cubit.dart';
 import 'package:google_maps/helper/location_helper.dart';
@@ -20,6 +23,7 @@ class _MapScreenState extends State<MapScreen> {
   FloatingSearchBarController controller = FloatingSearchBarController();
 
   static Position? position;
+  List<dynamic> places = [];
   final Completer<GoogleMapController> _mapController = Completer();
 
   static final CameraPosition _myCurrentLocationCameraPosition = CameraPosition(
@@ -98,12 +102,31 @@ class _MapScreenState extends State<MapScreen> {
           child: const Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
-            children: [],
+            children: [
+              buildSuggestionsBloc(),
+            ],
           ),
         );
       },
     );
   }
+
+  Widget buildSuggestionsBloc() {
+    return BlocBuilder<MapsCubit, MapsState>(builder: ((context, state) {
+      if (state is PlacesLoaded) {
+        places = state.places;
+        if(places.isNotEmpty){
+          return buildPlacesList()
+      }else{
+        return Container();
+      }
+      }else{
+        return Container();
+      }
+    }),);
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -122,7 +145,7 @@ class _MapScreenState extends State<MapScreen> {
                     ),
                   ),
                 ),
-                buildFloatingSearchBar()
+          buildFloatingSearchBar()
         ],
       ),
       floatingActionButton: Container(
