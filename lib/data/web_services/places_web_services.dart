@@ -6,8 +6,8 @@ class PlacesWebServices {
 
   PlacesWebServices() {
     BaseOptions options = BaseOptions(
-        connectTimeout: const Duration(milliseconds: 600),
-        receiveTimeout: const Duration(milliseconds: 600),
+        connectTimeout: const Duration(milliseconds: 6000000),
+        receiveTimeout: const Duration(milliseconds: 6000000),
         receiveDataWhenStatusError: true);
     dio = Dio(options);
   }
