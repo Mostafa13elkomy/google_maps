@@ -126,7 +126,21 @@ class _MapScreenState extends State<MapScreen> {
     }),);
   }
 
+Widget buildPlacesList(){
+  return ListView.builder(itemBuilder: ((context, index) {
+    return InkWell(
 
+      onTap: () {
+        controller.close();
+      },
+      child: placeItem(),
+    );
+  }),);
+}
+
+Widget placeItem(){
+  return Container()
+}
 
   @override
   Widget build(BuildContext context) {
