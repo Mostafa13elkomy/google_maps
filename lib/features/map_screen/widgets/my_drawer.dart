@@ -1,4 +1,3 @@
-import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,13 +15,14 @@ class MyDrawer extends StatelessWidget {
     return Column(
       children: [
         Container(
+          height: 144,
           padding: const EdgeInsetsDirectional.fromSTEB(70, 10, 70, 10),
           decoration: BoxDecoration(
             shape: BoxShape.rectangle,
             color: Colors.blue[100],
           ),
           child: Image.asset(
-            'assets/images/WhatsApp Image 2023-12-17 at 11.34.54_ff9bddf6.jpg',
+            'assets/images/komi13.jpg',
             fit: BoxFit.cover,
           ),
         ),
@@ -33,9 +33,12 @@ class MyDrawer extends StatelessWidget {
         const SizedBox(
           height: 5,
         ),
-        Text(
-          '01098253747',
-          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+        BlocProvider<PhoneAuthCubit>(
+          create: (context) => phoneAuthCubit,
+          child: Text(
+            '${phoneAuthCubit.getLoggedUser().phoneNumber}',
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
@@ -71,15 +74,13 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
-  Future<void> _launchUrl(_url) async {
-    if (!await launchUrl(_url)) {
-      throw Exception('Could not launch $_url');
-    }
+  void _launchURL(String url) async {
+    await canLaunch(url) ? await launch(url) : throw 'Could not launch $url';
   }
 
   Widget buildIcon(IconData icon, String url) {
     return InkWell(
-      onTap: () => _launchUrl(url),
+      onTap: () => _launchURL(url),
       child: Icon(
         icon,
         color: MyColors.blue,
@@ -109,6 +110,25 @@ class MyDrawer extends StatelessWidget {
     );
   }
 
+  Widget buildLogoutBlocProvider(context) {
+    // ignore: avoid_unnecessary_containers
+    return Container(
+      child: BlocProvider<PhoneAuthCubit>(
+        create: (context) => phoneAuthCubit,
+        child: buildDrawerListItem(
+          leadingIcon: Icons.logout,
+          title: 'Logout',
+          trailing: const SizedBox(),
+          color: Colors.red,
+          onTap: () {
+            phoneAuthCubit.logOut();
+            Navigator.of(context).pushReplacementNamed(loginScreen);
+          },
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -116,39 +136,37 @@ class MyDrawer extends StatelessWidget {
         padding: EdgeInsets.zero,
         children: [
           Container(
-            height: 200,
+            height: 280,
             child: DrawerHeader(
               decoration: BoxDecoration(color: Colors.blue[100]),
               child: buildDrawerHeader(context),
             ),
           ),
-          buildDrawerListItem(leadingIcon: Icons.person, title:'My Profile'),
+          buildDrawerListItem(leadingIcon: Icons.person, title: 'My Profile'),
           buildDrawerListItemsDivider(),
-          buildDrawerListItem(leadingIcon: Icons.history, title: 'Places History',
-          onTap: () {},
+          buildDrawerListItem(
+            leadingIcon: Icons.history,
+            title: 'Places History',
+            onTap: () {},
           ),
           buildDrawerListItemsDivider(),
-          buildDrawerListItem(leadingIcon: Icons.settings, title:'Setting'),
+          buildDrawerListItem(leadingIcon: Icons.settings, title: 'Setting'),
           buildDrawerListItemsDivider(),
           buildDrawerListItem(leadingIcon: Icons.help, title: 'Help'),
-          BlocProvider<PhoneAuthCubit>(create: (context) => phoneAuthCubit,
-          child:buildDrawerListItem(leadingIcon: Icons.logout, title: 'Logout',
-          trailing: const SizedBox(),
-          color: Colors.red,
-          onTap: () {
-            phoneAuthCubit.logOut();
-            Navigator.of(context).pushReplacementNamed(loginScreen);
-          },
+          buildLogoutBlocProvider(context),
+          const SizedBox(
+            height: 130,
           ),
-          ),
-          const SizedBox(height: 100,),
-            ListTile(
-            leading: Text('Follow us',
-            style: TextStyle(
-              color: Colors.grey[600],
-            ),),
+          ListTile(
+            leading: Text(
+              'Follow us',
+              style: TextStyle(color: Colors.grey[600], fontSize: 14),
+            ),
           ),
           buildSocialMediaIcons(),
+          const SizedBox(
+            height: 2,
+          )
         ],
       ),
     );
