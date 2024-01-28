@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps/constants/my_constants.dart';
+import 'package:google_maps/data/models/place_model.dart';
+import 'package:google_maps/data/models/place_suggestion.dart';
 import 'package:google_maps/features/map_screen/manager/cubit/maps_cubit.dart';
 import 'package:google_maps/features/map_screen/widgets/my_drawer.dart';
 import 'package:google_maps/features/map_screen/widgets/place_item.dart';
@@ -45,6 +47,22 @@ class _MapScreenState extends State<MapScreen> {
     controller.animateCamera(
       CameraUpdate.newCameraPosition(_myCurrentLocationCameraPosition),
     );
+  }
+
+// these variabules for get place location
+  Set<Marker> marker = Set();
+  late PlaceSuggestion placeSuggestion;
+  late Place selectedPlace;
+  late CameraPosition goToSearchedForPlace;
+  late Marker searchedPlaceMarker;
+
+  void buildCameraNewPosition(){
+goToSearchedForPlace = CameraPosition(
+  tilt: 0.0,
+  bearing: 0.0,
+  target: LatLng(selectedPlace.result.geometry.location.lat,
+  selectedPlace.result.geometry.location.lng ),
+);
   }
 
   @override
@@ -118,7 +136,6 @@ class _MapScreenState extends State<MapScreen> {
     final sessionToken = Uuid().v4();
     BlocProvider.of<MapsCubit>(context)
         .emitPlacesSuggestion(query, sessionToken);
-
   }
 
   Widget buildSuggestionsBloc() {
