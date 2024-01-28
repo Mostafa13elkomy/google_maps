@@ -50,7 +50,7 @@ class _MapScreenState extends State<MapScreen> {
   }
 
 // these variabules for get place location
-  Set<Marker> marker = Set();
+  Set<Marker> markers = Set();
   late PlaceSuggestion placeSuggestion;
   late Place selectedPlace;
   late CameraPosition goToSearchedForPlace;
@@ -78,6 +78,7 @@ class _MapScreenState extends State<MapScreen> {
         myLocationEnabled: true,
         zoomControlsEnabled: false,
         myLocationButtonEnabled: false,
+        markers: markers,
         initialCameraPosition: _myCurrentLocationCameraPosition,
         onMapCreated: (GoogleMapController controller) {
           _mapController.complete(controller);
@@ -126,11 +127,30 @@ class _MapScreenState extends State<MapScreen> {
             mainAxisSize: MainAxisSize.min,
             children: [
               buildSuggestionsBloc(),
+              buildSelectedPlaceLocationBloc()
             ],
           ),
         );
       },
     );
+  }
+
+  Widget buildSelectedPlaceLocationBloc() {
+    return BlocListener(
+      listener: (context, state) {
+        if (state is PlaceLocationLoaded) {
+          selectedPlace = state.place;
+          goToMySearchedForLocation();
+        }
+      },
+      child: Container(),
+    );
+  }
+
+  Future<void> goToMySearchedForLocation() async {
+    buildCameraNewPosition();
+    final GoogleMapController controller = await _mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(goToSearchedForPlace),);
   }
 
   void getplacesSuggestions(String query) {
