@@ -6,6 +6,7 @@ import 'package:google_maps/constants/my_constants.dart';
 import 'package:google_maps/data/models/place_suggestion.dart';
 import 'package:google_maps/features/map_screen/manager/cubit/maps_cubit.dart';
 import 'package:google_maps/features/map_screen/widgets/my_drawer.dart';
+import 'package:google_maps/features/map_screen/widgets/place_item.dart';
 import 'package:google_maps/features/otp_screen/manager/cubit/phone_auth_cubit.dart';
 import 'package:google_maps/helper/location_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -99,7 +100,7 @@ class _MapScreenState extends State<MapScreen> {
       builder: (context, transition) {
         return ClipRRect(
           borderRadius: BorderRadius.circular(8),
-          child: const Column(
+          child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             mainAxisSize: MainAxisSize.min,
             children: [
@@ -112,35 +113,39 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget buildSuggestionsBloc() {
-    return BlocBuilder<MapsCubit, MapsState>(builder: ((context, state) {
-      if (state is PlacesLoaded) {
-        places = state.places;
-        if(places.isNotEmpty){
-          return buildPlacesList()
-      }else{
-        return Container();
-      }
-      }else{
-        return Container();
-      }
-    }),);
+    return BlocBuilder<MapsCubit, MapsState>(
+      builder: ((context, state) {
+        if (state is PlacesLoaded) {
+          places = state.places;
+          if (places.isNotEmpty) {
+            return buildPlacesList();
+          } else {
+            return Container();
+          }
+        } else {
+          return Container();
+        }
+      }),
+    );
   }
 
-Widget buildPlacesList(){
-  return ListView.builder(itemBuilder: ((context, index) {
-    return InkWell(
-
-      onTap: () {
-        controller.close();
-      },
-      child: placeItem(),
+  Widget buildPlacesList() {
+    return ListView.builder(
+      itemBuilder: ((context, index) {
+        return InkWell(
+          onTap: () {
+            controller.close();
+          },
+          child: PlaceItem(
+            suggestion: places[index],
+          ),
+        );
+      }),
+      itemCount: places.length,
+      shrinkWrap: true,
+      physics: const ClampingScrollPhysics(),
     );
-  }),);
-}
-
-Widget placeItem(){
-  return Container()
-}
+  }
 
   @override
   Widget build(BuildContext context) {
