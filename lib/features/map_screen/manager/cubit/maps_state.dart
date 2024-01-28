@@ -12,3 +12,9 @@ class PlacesLoaded extends MapsState {
     required this.places,
   });
 }
+
+class PlaceLocationLoaded extends MapsState {
+   final Place place;
+
+  PlaceLocationLoaded(this.place);
+}

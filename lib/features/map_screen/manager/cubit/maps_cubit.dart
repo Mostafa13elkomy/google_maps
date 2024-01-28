@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:google_maps/data/models/place_model.dart';
 import 'package:meta/meta.dart';
 import 'package:google_maps/data/repos/maps_repo.dart';
 
@@ -14,6 +15,12 @@ class MapsCubit extends Cubit<MapsState> {
   void emitPlacesSuggestion(String place, String sessionToken) {
     mapsRepos.fetchSuggestion(place, sessionToken).then((suggestion) {
       emit(PlacesLoaded(places: suggestion));
+    });
+  }
+
+    void emitPlaceLocation(String placeId, String sessionToken) {
+    mapsRepos.getPlaceLocation(placeId, sessionToken).then((place) {
+      emit(PlaceLocationLoaded(place));
     });
   }
 }
