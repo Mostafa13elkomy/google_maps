@@ -56,13 +56,14 @@ class _MapScreenState extends State<MapScreen> {
   late CameraPosition goToSearchedForPlace;
   late Marker searchedPlaceMarker;
 
-  void buildCameraNewPosition(){
-goToSearchedForPlace = CameraPosition(
-  tilt: 0.0,
-  bearing: 0.0,
-  target: LatLng(selectedPlace.result.geometry.location.lat,
-  selectedPlace.result.geometry.location.lng ),
-);
+  void buildCameraNewPosition() {
+    goToSearchedForPlace = CameraPosition(
+      tilt: 0.0,
+      bearing: 0.0,
+      target: LatLng(selectedPlace.result.geometry.location.lat,
+          selectedPlace.result.geometry.location.lng),
+      zoom: 13,
+    );
   }
 
   @override
@@ -162,8 +163,14 @@ goToSearchedForPlace = CameraPosition(
           onTap: () {
             controller.close();
           },
-          child: PlaceItem(
-            suggestion: places[index],
+          child: InkWell(
+            onTap: () {
+              placeSuggestion = places[index];
+              controller.close();
+            },
+            child: PlaceItem(
+              suggestion: places[index],
+            ),
           ),
         );
       }),
@@ -171,6 +178,12 @@ goToSearchedForPlace = CameraPosition(
       shrinkWrap: true,
       physics: const ClampingScrollPhysics(),
     );
+  }
+
+  void getSelectedPlaceLocation() {
+    final sessionToken = Uuid().v4();
+    BlocProvider.of<MapsCubit>(context)
+        .emitPlaceLocation(placeSuggestion.placeId, sessionToken);
   }
 
   @override
