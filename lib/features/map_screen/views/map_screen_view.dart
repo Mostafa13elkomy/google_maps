@@ -66,11 +66,9 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget buildFloatingSearchBar() {
-    GlobalKey<FormState> floatingSearchBarKey = GlobalKey<FormState>();
     final isPortrate =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
-      key:floatingSearchBarKey ,
       padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
       controller: controller,
       elevation: 6,

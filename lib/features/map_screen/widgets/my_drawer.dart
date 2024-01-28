@@ -91,7 +91,7 @@ class MyDrawer extends StatelessWidget {
 
   Widget buildSocialMediaIcons() {
     return Padding(
-      padding: EdgeInsetsDirectional.only(start: 16),
+      padding: const EdgeInsetsDirectional.only(start: 16),
       child: Row(
         children: [
           buildIcon(FontAwesomeIcons.facebook,

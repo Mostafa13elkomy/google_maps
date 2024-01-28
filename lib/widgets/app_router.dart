@@ -19,7 +19,7 @@ class AppRouter {
       case mapScreen:
         return MaterialPageRoute(
           builder: (_) =>  BlocProvider(
-            create: (context) =>
+            create: (BuildContext context) =>
           MapsCubit(MapsRepos(PlacesWebServices(),),),
           child:const MapScreen(),
             ),

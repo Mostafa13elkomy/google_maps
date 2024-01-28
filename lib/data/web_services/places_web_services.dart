@@ -6,8 +6,8 @@ class PlacesWebServices {
 
   PlacesWebServices() {
     BaseOptions options = BaseOptions(
-        connectTimeout: const Duration(milliseconds: 6000000),
-        receiveTimeout: const Duration(milliseconds: 6000000),
+        connectTimeout: const Duration(minutes: 6000000000000000000),
+        receiveTimeout: const Duration(minutes: 6000000000000000000),
         receiveDataWhenStatusError: true);
     dio = Dio(options);
   }
@@ -18,9 +18,11 @@ class PlacesWebServices {
         'input': place,
         'types': 'address',
         'components': 'country:eg',
-        'key': googleMapsApiKey,
+        'key': 'AIzaSyB6CoqsAN_FesP4Kf-1bKvOCLcWCjDTrNA',
         'sessiontoken': sessionToken,
       });
+      print(response.data['predictions']);
+      print(response.statusCode);
       return response.data["predictions"];
     } catch (error) {
       print(error.toString());
