@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps/constants/my_constants.dart';
-import 'package:google_maps/data/models/place_suggestion.dart';
 import 'package:google_maps/features/map_screen/manager/cubit/maps_cubit.dart';
 import 'package:google_maps/features/map_screen/widgets/my_drawer.dart';
 import 'package:google_maps/features/map_screen/widgets/place_item.dart';
@@ -11,6 +10,7 @@ import 'package:google_maps/features/otp_screen/manager/cubit/phone_auth_cubit.d
 import 'package:google_maps/helper/location_helper.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:material_floating_search_bar_2/material_floating_search_bar_2.dart';
+import 'package:uuid/uuid.dart';
 
 class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
@@ -66,9 +66,11 @@ class _MapScreenState extends State<MapScreen> {
   }
 
   Widget buildFloatingSearchBar() {
+    GlobalKey<FormState> floatingSearchBarKey = GlobalKey<FormState>();
     final isPortrate =
         MediaQuery.of(context).orientation == Orientation.portrait;
     return FloatingSearchBar(
+      key:floatingSearchBarKey ,
       padding: const EdgeInsets.fromLTRB(2, 0, 2, 0),
       controller: controller,
       elevation: 6,
@@ -84,7 +86,9 @@ class _MapScreenState extends State<MapScreen> {
       iconColor: MyColors.blue,
       transitionDuration: const Duration(milliseconds: 600),
       transitionCurve: Curves.easeInOut,
-      onQueryChanged: (query) {},
+      onQueryChanged: (query) {
+        getplacesSuggestions(query);
+      },
       onFocusChanged: (_) {},
       actions: [
         FloatingSearchBarAction(
@@ -110,6 +114,13 @@ class _MapScreenState extends State<MapScreen> {
         );
       },
     );
+  }
+
+  void getplacesSuggestions(String query) {
+    final sessionToken = Uuid().v4();
+    BlocProvider.of<MapsCubit>(context)
+        .emitPlacesSuggestion(query, sessionToken);
+
   }
 
   Widget buildSuggestionsBloc() {
