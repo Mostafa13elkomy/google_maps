@@ -18,7 +18,7 @@ class PlacesWebServices {
         'input': place,
         'types': 'address',
         'components': 'country:eg',
-        'key': 'AIzaSyB6CoqsAN_FesP4Kf-1bKvOCLcWCjDTrNA',
+        'key': googleMapsApiKey,
         'sessiontoken': sessionToken,
       });
       print(response.data['predictions']);
@@ -27,6 +27,23 @@ class PlacesWebServices {
     } catch (error) {
       print(error.toString());
       return [];
+    }
+  }
+
+  Future<dynamic> getPlaceLocation(String placeId, String sessionToken) async {
+    try {
+      Response response = await dio.get(placeLocationBaseUrl, queryParameters: {
+        'place_id': placeId,
+        'types': 'geometry',
+        'key': googleMapsApiKey,
+        'sessiontoken': sessionToken,
+      });
+      return response.data;
+    } catch (error) {
+      return Future.error(
+        'place location error : ',
+        StackTrace.fromString('this is its trace'),
+      );
     }
   }
 }
