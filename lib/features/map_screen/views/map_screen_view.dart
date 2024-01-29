@@ -55,6 +55,7 @@ class _MapScreenState extends State<MapScreen> {
   late Place selectedPlace;
   late CameraPosition goToSearchedForPlace;
   late Marker searchedPlaceMarker;
+  late Marker currentLocationMarker;
 
   void buildCameraNewPosition() {
     goToSearchedForPlace = CameraPosition(
@@ -161,10 +162,29 @@ class _MapScreenState extends State<MapScreen> {
       position: goToSearchedForPlace.target,
       markerId: const MarkerId('2'),
       onTap: () {
-        build
+        buildCurrentLocationMarker();
       },
+      infoWindow: InfoWindow(
+        title: '${placeSuggestion.description}'
+      ),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
   }
+
+void buildCurrentLocationMarker(){
+    currentLocationMarker = Marker(
+      position:LatLng(position!.latitude,position!.longitude),
+      markerId: const MarkerId('1'),
+      onTap: () {
+      },
+      infoWindow: const InfoWindow(
+        title: 'your current location'
+      ),
+      icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
+    );
+}
+ 
+
 
   void getplacesSuggestions(String query) {
     final sessionToken = Uuid().v4();
