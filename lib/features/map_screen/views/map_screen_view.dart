@@ -164,27 +164,28 @@ class _MapScreenState extends State<MapScreen> {
       onTap: () {
         buildCurrentLocationMarker();
       },
-      infoWindow: InfoWindow(
-        title: '${placeSuggestion.description}'
-      ),
+      infoWindow: InfoWindow(title: '${placeSuggestion.description}'),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
+    addMarkerToMarkersAndUpdateUi(searchedPlaceMarker);
   }
 
-void buildCurrentLocationMarker(){
+  void buildCurrentLocationMarker() {
     currentLocationMarker = Marker(
-      position:LatLng(position!.latitude,position!.longitude),
+      position: LatLng(position!.latitude, position!.longitude),
       markerId: const MarkerId('1'),
-      onTap: () {
-      },
-      infoWindow: const InfoWindow(
-        title: 'your current location'
-      ),
+      onTap: () {},
+      infoWindow: const InfoWindow(title: 'your current location'),
       icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueRed),
     );
-}
- 
+    addMarkerToMarkersAndUpdateUi(currentLocationMarker);
+  }
 
+  void addMarkerToMarkersAndUpdateUi(Marker marker) {
+    setState(() {
+      markers.add(marker);
+    });
+  }
 
   void getplacesSuggestions(String query) {
     final sessionToken = Uuid().v4();
