@@ -150,7 +150,20 @@ class _MapScreenState extends State<MapScreen> {
   Future<void> goToMySearchedForLocation() async {
     buildCameraNewPosition();
     final GoogleMapController controller = await _mapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(goToSearchedForPlace),);
+    controller.animateCamera(
+      CameraUpdate.newCameraPosition(goToSearchedForPlace),
+    );
+    buildMySearchedPlaceMarker();
+  }
+
+  void buildMySearchedPlaceMarker() {
+    searchedPlaceMarker = Marker(
+      position: goToSearchedForPlace.target,
+      markerId: const MarkerId('2'),
+      onTap: () {
+        build
+      },
+    );
   }
 
   void getplacesSuggestions(String query) {
