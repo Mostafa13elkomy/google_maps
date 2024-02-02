@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:google_maps/constants/my_strings.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class PlacesWebServices {
   late Dio dio;
@@ -18,7 +19,7 @@ class PlacesWebServices {
         'input': place,
         'types': 'address',
         'components': 'country:eg',
-        'key': googleMapsApiKey,
+        'key': "AIzaSyDXl_L7a9MIlDg_bR3CEuBGLK0WBBE3pW0",
         'sessiontoken': sessionToken,
       });
       print(response.data['predictions']);
@@ -32,18 +33,40 @@ class PlacesWebServices {
 
   Future<dynamic> getPlaceLocation(String placeId, String sessionToken) async {
     try {
-      Response response = await dio.get(placeLocationBaseUrl, queryParameters: {
-        'place_id': placeId,
-        'types': 'geometry',
-        'key': googleMapsApiKey,
-        'sessiontoken': sessionToken,
-      });
+      Response response = await dio.get(
+        placeLocationBaseUrl,
+        queryParameters: {
+          'place_id': placeId,
+          'fields': 'geometry',
+          'key': "AIzaSyDXl_L7a9MIlDg_bR3CEuBGLK0WBBE3pW0",
+          'sessiontoken': sessionToken
+        },
+      );
       return response.data;
     } catch (error) {
-      return Future.error(
-        'place location error : ',
-        StackTrace.fromString('this is its trace'),
-      );
+      return Future.error("Place location error : ",
+          StackTrace.fromString(('this is its trace'),),);
     }
   }
+
+  // origin means current location
+  // destination means searched for location
+  Future<dynamic> getDirections(LatLng origin,LatLng destination) async {
+    try {
+      Response response = await dio.get(
+        placeDirectionsBaseUrl,
+        queryParameters: {
+          'origin':'${origin.latitude},${origin.longitude}',
+          'destination': '${destination.latitude},${destination.longitude}',
+          'key': "AIzaSyDXl_L7a9MIlDg_bR3CEuBGLK0WBBE3pW0",
+        },
+      );
+      return response.data;
+    } catch (error) {
+      return Future.error("Place location error : ",
+          StackTrace.fromString(('this is its trace'),),);
+    }
+  }
+
+  
 }

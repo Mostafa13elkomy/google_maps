@@ -21,7 +21,7 @@ class AppRouter {
           builder: (_) =>  BlocProvider(
             create: (BuildContext context) =>
           MapsCubit(MapsRepos(PlacesWebServices(),),),
-          child:const MapScreen(),
+          child: MapScreen(),
             ),
         );
 
@@ -45,4 +45,3 @@ class AppRouter {
     return null;
   }
 }
-

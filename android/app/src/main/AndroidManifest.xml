@@ -3,7 +3,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />     
+    <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
         <!-- Provide required visibility configuration for API level 30 and above -->
         <!-- Provide required visibility configuration for API level 30 and above -->
 <queries>
@@ -32,7 +32,7 @@
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
             <meta-data android:name="com.google.android.geo.API_KEY"
-                    android:value="AIzaSyBNptmpA-cC3smAtxB7C8TqVX1it3H9X9M"/>
+                    android:value="AIzaSyDXl_L7a9MIlDg_bR3CEuBGLK0WBBE3pW0"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
